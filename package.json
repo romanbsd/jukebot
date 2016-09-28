@@ -1,0 +1,18 @@
+{
+  "name": "jukebot",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Roman Shterenzon <roman.shterenzon@gmail.com>",
+  "description": "Jukebot Slack bot",
+  "dependencies": {
+    "hubot": "^2.19.0",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-help": "^0.2.0",
+    "hubot-redis-brain": "0.0.3",
+    "hubot-slack": "^4.1.0",
+    "mopidy": "^0.5.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
