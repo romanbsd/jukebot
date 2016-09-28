@@ -33,6 +33,11 @@ module.exports = function(bot) {
     mopidy.close();
   });
 
+  function setVolume(res, vol) {
+    res.reply("Setting volume to: " + vol);
+    mopidy.mixer.setVolume(vol);
+  }
+
   function defineCommands() {
     bot.respond(/search\s+(.*)/i, function(res) {
       var query = res.match[1];
@@ -51,7 +56,7 @@ module.exports = function(bot) {
       var i = parseInt(res.match[1], 10),
         track;
       if (state.searchResult && (track = state.searchResult.tracks[i])) {
-        mopidy.tracklist.add([track]).then( (tl) => mopidy.playback.play(tl[0]) );
+        mopidy.tracklist.add([track]).then((tl) => mopidy.playback.play(tl[0]));
         res.reply("Going to play " + trackDesc(track));
       } else {
         res.reply("I don't know what to play");
@@ -61,6 +66,26 @@ module.exports = function(bot) {
     bot.respond(/what's playing\?/i, function(res) {
       mopidy.playback.getCurrentTrack().then(function(track) {
         res.reply("Currently playing " + trackDesc(track));
+      });
+    });
+
+    bot.respond(/volume down/i, function(res) {
+      mopidy.mixer.getVolume().then(function(vol) {
+        vol -= 10;
+        if (vol < 0) {
+          vol = 0;
+        }
+        setVolume(res, vol);
+      });
+    });
+
+    bot.respond(/volume up/i, function(res) {
+      mopidy.mixer.getVolume().then(function(vol) {
+        vol += 10;
+        if (vol > 100) {
+          vol = 100;
+        }
+        setVolume(res, vol);
       });
     });
   }
